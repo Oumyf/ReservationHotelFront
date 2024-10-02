@@ -1,0 +1,130 @@
+/* Section principale */
+.hotel {
+    padding: 50px 0;
+    background-color: #f9f9f9;
+}
+
+/* Titre de section */
+.top1 h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #b06835;
+    margin-bottom: 28px;
+    font-weight: bold;
+}
+
+.top1 p {
+    width: 70%;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Section des cartes */
+.hotel-section1 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
+    gap: 30px;
+    padding: 0 20px;
+    
+}
+
+/* Carte des chambres */
+.hotel-card1 {
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    width: 300px;
+    display: block;
+    margin-left: -20px;
+}
+
+.hotel-card1:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Image de la carte */
+.hotel-card1 img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+/* Titre de la carte */
+.hotel-card1 h3 {
+    font-size: 1.5rem;
+    margin: 15px 10px;
+    color: #333;
+}
+
+/* Description de la carte */
+.hotel-card1 p {
+    margin: 0 10px;
+    font-size: 1.1rem;
+    color: #888;
+}
+
+/* Informations sur la chambre */
+.hotel-card1 .info {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: #fafafa;
+    font-size: 1rem;
+    color: #555;
+    border-top: 1px solid #eaeaea;
+    margin-top: 10px;
+}
+
+/* Icônes */
+.hotel-card1 .info span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Section des prix */
+.hotel-card1 .price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #eaeaea;
+}
+
+.price-value {
+    background-color: #b06835;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.price .adults {
+    background-color: #eaeaea;
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+@media (max-width: 1024px) {
+    .hotel-section1 {
+        grid-template-columns: repeat(2, 1fr); /* 2 colonnes sur tablettes */
+    }
+}
+
+@media (max-width: 768px) {
+    .hotel-section1 {
+        grid-template-columns: 1fr; /* 1 colonne sur petits écrans */
+    }
+}

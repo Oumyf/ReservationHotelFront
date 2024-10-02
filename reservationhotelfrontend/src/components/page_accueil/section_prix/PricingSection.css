@@ -1,0 +1,16 @@
+.pricing-section {
+  background-color: #e6f0ff;
+  padding: 20px;
+}
+
+.pricing {
+  display: flex;
+  justify-content: space-between;
+}
+
+.price-plan {
+  padding: 15px;
+  background-color: white;
+  border: 1px solid #ddd;
+  width: 30%;
+}

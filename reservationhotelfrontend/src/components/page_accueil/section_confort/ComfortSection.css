@@ -1,0 +1,60 @@
+body{
+  overflow-x: hidden;
+}
+
+.confort{
+  justify-content: center;
+  margin: 10px;
+}
+
+.confort h2 {
+  text-align: center;
+  margin-top: 80px;
+  font-size: 36px;
+  color: #b05e2b;
+}
+
+.cards {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+
+.arriere_plan{
+  background-color: rgba(136, 69, 19, 0.4);
+  margin-left: 0;
+  margin-top: 0;
+  width: 100px;
+  height: 30px;
+  border: 1px solid rgba(136, 69, 19, 0.4);
+  border-radius: 50px 0 0 0;
+  padding-top: 20px;
+  text-align: center;
+  align-items: center;
+}
+
+.texte {
+  color: white;
+}
+
+
+.card1, .card2, .card3 {
+  width: 50vh;
+  height: 50vh;
+  margin: 50px;
+  border: 1px solid rgba(136, 69, 19, 0.4);
+  border-radius: 50px;
+}
+
+.card1 {
+  background-image: url('suite.png');
+}
+
+.card2 {
+  background-image: url('piscine.png');
+}
+
+.card3 {
+  background-image: url('chambre.png');
+}

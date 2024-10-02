@@ -1,0 +1,34 @@
+.footer {
+  background-color: rgba(136, 69, 19, 0.4);
+  color: white;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-left, .footer-middle, .footer-right {
+  flex: 1;
+}
+
+.footer-menu, .social-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-menu li, .social-links li {
+  margin: 5px 0;
+}
+
+.footer-menu a, .social-links a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-menu a:hover, .social-links a:hover {
+  color: #f0c14b;
+}
