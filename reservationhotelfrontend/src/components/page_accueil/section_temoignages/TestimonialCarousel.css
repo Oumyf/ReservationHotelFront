@@ -1,0 +1,18 @@
+.testimonial-carousel {
+    text-align: center;
+    padding: 40px 0;
+    background-color: #f4ece7;
+  }
+  
+  .testimonial-carousel h2 {
+    font-size: 24px;
+    margin-bottom: 40px;
+  }
+  
+  .carousel-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+  }
+  

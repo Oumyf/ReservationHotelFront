@@ -1,75 +1,109 @@
-.testimonial-section {
-  background-color: #f3e5da;
-  padding: 50px;
+/* Section des témoignages */
+.testimonials {
   text-align: center;
+  padding: 50px 0;
+  background-color: #f5e6e2;
 }
 
-.title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #7c4a33;
-  margin-bottom: 30px;
-}
-
-.carousel-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.testimonial-card {
-  padding: 30px;
-  background-color: #fff;
-  border-radius: 25px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  margin: 0 15px;
-  transform: rotate(-3deg);
-}
-
-.testimonial-content {
-  text-align: center;
-  position: relative;
-}
-
-.avatar-container {
-  position: absolute;
-  top: -50px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.avatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.name {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-top: 80px;
+.testimonials h2 {
+  font-size: 2.5rem;
+  margin-bottom: 40px;
   color: #333;
 }
 
-.role {
+/* Slider des témoignages */
+.testimonial-slider {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 20px;
+}
+
+/* Carte des témoignages */
+/* Carte des témoignages */
+.testimonial-card {
+  position: relative;
+  background-color: #fff;
+  border-radius: 30px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 300px;
+  min-width: 300px; /* Ajout d'une taille minimale pour uniformiser les cartes */
+  text-align: center;
+  height: 450px; /* Hauteur fixe pour toutes les cartes */
+}
+
+
+.testimonial-card:before {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: -10px;
+  width: 100%;
+  height: 100%;
+  background-color: #b06835;
+  z-index: -1;
+  border-radius: 30px;
+  transform: rotate(-5deg);
+}
+
+/* Déplacement de l'image en bas de la carte */
+/* Avatar centré en bas de la carte */
+.testimonial-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-top: -40px; /* Ajustement du margin pour éviter le chevauchement */
+  position: relative; /* Utilisation de relative pour que l'avatar reste visible dans la carte */
+  border: 4px solid #fff; /* Bordure blanche pour l'effet de propreté */
+}
+
+
+.testimonial-card h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.testimonial-card .position {
   font-size: 1rem;
+  color: #b06835;
+  margin-bottom: 15px;
+}
+
+/* Citation */
+.testimonial-card .quote {
+  font-size: 1.1rem;
   color: #666;
-}
-
-.testimony {
   font-style: italic;
-  color: #555;
-  margin-top: 15px;
-  padding: 10px;
-  line-height: 1.5;
+  margin-top: 20px;
+  padding-bottom: 40px; /* Pour laisser de la place à l'avatar */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal; /* Empêche le texte de s'étirer */
+  height: 120px; /* Limite la hauteur du texte pour uniformiser les cartes */
 }
 
-.slick-dots li button:before {
-  color: #7c4a33;
+
+/* Points de navigation */
+.testimonials .dots {
+  margin-top: 60px; /* Ajustement pour plus d'espace avec l'image en bas */
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
-.slick-prev, .slick-next {
-  color: #7c4a33;
+.testimonials .dot {
+  width: 12px;
+  height: 12px;
+  background-color: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.testimonials .dot.active {
+  background-color: #b06835;
 }
