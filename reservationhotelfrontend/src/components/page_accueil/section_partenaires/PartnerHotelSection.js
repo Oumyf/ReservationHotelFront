@@ -1,33 +1,67 @@
-import React from "react";
-import './PartnerHotelSection.css';
-import hotelImage from './hotel_partenaire.png'; 
-const PartenaireHotels = () => {
+// PartnerHotelSection.js
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles (only main CSS)
+import 'swiper/swiper-bundle.css'; // Use this for the main CSS styles
+
+// Import required modules from Swiper
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+
+import './PartnerHotelSection.css';  
+import hotelImage from './hotel_partenaire.png';
+
+const PartenaireHotelSection = () => {
+  const [hotels, setHotels] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/hotels')
+      .then(response => response.json())
+      .then(data => setHotels(data))
+      .catch(error => console.error("Error fetching hotels:", error));
+  }, []);
+
+  const handleExploreClick = (id) => {
+    navigate(`/hotel/${id}`);
+  };
+
   return (
     <section className="partenaire-hotels">
       <h2 className="title">Les Hotels Partenaires</h2>
-      <div className="hotel-card">
-        <div className="hotel-info">
-          <h3>Radisson Blu Hotel</h3>
-          <p>
-            Profitez de cet hôtel au design moderne dans l'élégant quartier de
-            Fann, sur la presqu'île du Cap-Vert. Vous disposerez de tout ce dont
-            vous avez besoin dans ces 241 chambres contemporaines, y compris des
-            équipements et des installations pratiques...
-          </p>
-          <button className="explore-btn">Explorer</button>
-        </div>
-        <div className="hotel-image">
-        <div class="overlay_image"></div>
-          <img src={hotelImage} alt="Radisson Blu Hotel" />
-        </div>
-      </div>
-      <div className="pagination">
-        <span className="dot"></span>
-        <span className="dot"></span>
-        <span className="dot"></span>
-      </div>
+      <Swiper
+        spaceBetween={50}
+        slidesPerView={1}
+        navigation // Enable navigation
+        pagination={{ clickable: true }} // Enable pagination
+        modules={[Navigation, Pagination]} // Specify modules
+      >
+        {hotels.map((hotel) => (
+          <SwiperSlide key={hotel._id}>
+            <div className="hotel-card">
+              <div className="hotel-info">
+                <h3>{hotel.nom}</h3>
+                <p>{hotel.description.slice(0, 300)}...</p>
+                <button 
+                  className="explore-btn" 
+                  onClick={() => handleExploreClick(hotel._id)}
+                >
+                  Explorer
+                </button>
+              </div>
+              <div className="hotel-image">
+                <div className="overlay_image"></div>
+                <img src={hotelImage} alt={hotel.nom} />
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </section>
   );
 };
 
-export default PartenaireHotels;
+export default PartenaireHotelSection;

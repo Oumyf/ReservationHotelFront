@@ -172,3 +172,56 @@
   height: auto;
   z-index: 0; /* Image sous l'overlay */
 }
+
+/* PartnerHotelSection.css */
+.partenaire-hotels {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hotel-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.hotel-info {
+  width: 60%;
+}
+
+.hotel-image {
+  width: 35%;
+  position: relative;
+}
+
+.overlay_image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.explore-btn {
+  padding: 10px 20px;
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.swiper-pagination {
+  bottom: 10px !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ff6600;
+}

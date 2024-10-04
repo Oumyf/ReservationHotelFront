@@ -1,0 +1,90 @@
+.hotel-details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.main-image {
+  position: relative;
+  text-align: center;
+}
+
+.main-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  color: white;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.hotel-intro {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.hotel-intro h2 {
+  font-size: 28px;
+  color: #8B4513;
+}
+
+.hotel-intro p {
+  font-size: 16px;
+  color: #333;
+  margin: 10px 0;
+}
+
+.hotel-heart-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #8B4513;
+}
+
+.hotel-heart-icon i {
+  margin-right: 8px;
+}
+
+.hotel-discover-section {
+  text-align: center;
+}
+
+.hotel-discover-section h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #8B4513;
+}
+
+.discover-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.hotel-description {
+  margin-top: 20px;
+}
+
+.discover-button {
+  background-color: #8B4513;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.discover-button:hover {
+  background-color: #A0522D;
+}

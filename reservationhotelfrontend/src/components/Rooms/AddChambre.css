@@ -1,0 +1,74 @@
+body {
+  background-image: url('./hotel.png'); /* Ajouter l'image de fond */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center; /* Centrer les éléments horizontalement */
+  align-items: center; /* Centrer les éléments verticalement */
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Empêcher le défilement */
+}
+
+.add-chambre-container {
+  max-width: 500px; /* Ajuster la largeur du conteneur */
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.3); /* Arrière-plan semi-transparent */
+  border-radius: 15px; /* Ajouter des coins arrondis */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); /* Ombre pour l'effet d'élévation */
+  backdrop-filter: blur(10px); /* Effet de verre dépoli */
+  z-index: 1;
+}
+
+h2 {
+  text-align: center;
+  color: #fff; /* Contraste avec le fond */
+  margin-bottom: 25px;
+  font-size: 24px;
+}
+
+.form-chambre input,
+.form-chambre textarea {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.7); /* Bordure légère pour les entrées */
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.9); /* Fond clair des entrées */
+  font-size: 16px;
+  color: #333; /* Couleur du texte pour une meilleure lisibilité */
+}
+
+.form-chambre input:focus,
+.form-chambre textarea:focus {
+  border-color: #007bff; /* Couleur de la bordure lors du focus */
+  outline: none; /* Supprimer la bordure par défaut du focus */
+}
+
+.btn-ajouter {
+  width: 100%; /* Adapter le bouton à la largeur */
+  padding: 15px;
+  background-color: #8B5A2B; /* Couleur du bouton */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-ajouter:hover {
+  background-color: #6B4E3A; /* Teinte plus sombre au survol */
+}
+
+.form-chambre input[type="file"] {
+  border: none; /* Supprimer la bordure du champ de fichier */
+}
+
+@media (max-width: 768px) {
+  .add-chambre-container {
+    max-width: 90%; /* Adapter la largeur pour les petits écrans */
+  }
+}

@@ -1,0 +1,82 @@
+.room-card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.room-card:hover {
+  transform: scale(1.05);
+}
+
+.room-image {
+  width: 100%;
+  height: auto;
+}
+
+.room-info {
+  padding: 15px;
+}
+
+.room-info h3 {
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+.room-info p {
+  font-size: 1em;
+  color: #777;
+}
+
+.room-details {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.room-detail-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.9em;
+}
+
+.room-detail-item i {
+  margin-right: 5px;
+}
+
+.room-price {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.room-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-button,
+.delete-button {
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  transition: background-color 0.3s;
+}
+
+.delete-button {
+  background-color: #d9534f;
+}
+
+.edit-button:hover {
+  background-color: #4cae4c;
+}
+
+.delete-button:hover {
+  background-color: #c9302c;
+}

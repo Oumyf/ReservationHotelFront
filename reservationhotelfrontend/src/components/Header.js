@@ -2,6 +2,7 @@ import React from "react";
 import "./Header.css";
 import logo from '../logo.png';
 import chambre_banniere from './chambrebanniere.png';
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   return (

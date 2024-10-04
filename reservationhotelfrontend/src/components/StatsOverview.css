@@ -1,0 +1,7 @@
+/* Placeholder styles for Stats Overview */
+.stats-overview {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+  }
+  
