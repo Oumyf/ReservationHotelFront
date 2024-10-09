@@ -2,14 +2,14 @@
   padding: 20px;
   text-align: center;
   align-items: center;
-
-
 }
 
 .title {
-  color: #b5651d;
-  font-size: 24px;
-  margin-bottom: 20px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 70px;
+  font-size: 36px;
+  color: #b05e2b;
 }
 
 .hotel {
@@ -39,7 +39,6 @@
   margin-top: 70px;
   text-align: left;
   margin-left: 70px;
-
 
 }
 
@@ -110,15 +109,7 @@
   margin-bottom: 20px;
 }
 
-.hotel-card1 {
-  display: flex;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  width: 80%;
-  max-width: 1000px;
-}
+
 
 .hotel-info {
   flex: 1;
@@ -168,7 +159,7 @@
 }
 
 .hotel-image img {
-  width: 100%;
+  width: 80%;
   height: auto;
   z-index: 0; /* Image sous l'overlay */
 }
@@ -202,10 +193,11 @@
 .overlay_image {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 10%;
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.3);
+  width: 75%;
 }
 
 .explore-btn {

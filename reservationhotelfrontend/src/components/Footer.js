@@ -1,30 +1,29 @@
 import React from 'react';
-import './Footer.css'
+import './Footer.css'; // Assurez-vous de créer un fichier CSS pour la mise en forme
 
 const Footer = () => {
   return (
     <footer className="footer">
-    <div className="footer-content">
-        <div className="footer-left">
-            <img src="path/to/logo.png" alt="Company Logo" className="logo" />
-            <ul className="footer-menu">
-                <li><a href="#">Accueil</a></li>
-                <li><a href="#">À Propos</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
+      <div className="footer-content">
+        <ul className="footer-links">
+          <li><a href="#">Accueil</a></li>
+          <li><a href="#">À Propos</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+        <div className="social-links">
+          <a href="#">Facebook</a>
+          <a href="#">Twitter</a>
+          <a href="#">Instagram</a>
         </div>
-        <div className="footer-middle">
-            <ul className="social-links">
-                <li><a href="#"><i className="fab fa-facebook"></i> Facebook</a></li>
-                <li><a href="#"><i className="fab fa-twitter"></i> Twitter</a></li>
-                <li><a href="#"><i className="fab fa-instagram"></i> Instagram</a></li>
-            </ul>
+        <div className="newsletter">
+          <p>S'abonner à notre newsletter</p>
+          <div className="newsletter-signup">
+            <input type="email" placeholder="Adresse Email" />
+            <button>OK</button>
+          </div>
         </div>
-        <div className="footer-right">
-            <p>&copy; 2024 Teranga Sénégal. Tous droits réservés.</p>
-        </div>
-    </div>
-</footer>
+      </div>
+    </footer>
   );
 };
 

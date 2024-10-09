@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useCallback, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -8,9 +8,6 @@ import HotelRooms from "./components/HotelRooms";
 import AddChambre from './components/Rooms/AddChambre';
 import RoomList from './components/Rooms/RoomList';
 
-
-
-// ErrorBoundary component definition
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -40,15 +37,13 @@ const PartnerHotelSection = lazy(() => import("./components/page_accueil/section
 const PopularRooms = lazy(() => import("./components/page_accueil/section_chambres/PopularRooms"));
 const TestimonialCarousel = lazy(() => import("./components/page_accueil/section_temoignages/TestimonialCarousel"));
 const PricingSection = lazy(() => import("./components/page_accueil/section_prix/PricingSection"));
-const HotelList = lazy(() => import("./components/HotelList"));
+// const HotelList = lazy(() => import("./components/HotelList"));
 const HotelDetails = lazy(() => import("./components/HotelDetails"));
 const SignupForm = lazy(() => import("./components/SignUpForm"));
 const LoginForm = lazy(() => import("./components/LoginForm"));
 const ChambreList = lazy(() => import("./components/ChambreList"));
 const Dashboard = lazy(() => import("./components/Dashboard"));
 
-
-// Home component to group all sections
 const Home = () => {
   return (
     <div>
@@ -60,7 +55,6 @@ const Home = () => {
           <PopularRooms />
           <TestimonialCarousel />
           <PricingSection />
-          <HotelList />
         </ErrorBoundary>
       </Suspense>
       <Footer />
@@ -69,6 +63,18 @@ const Home = () => {
 };
 
 const App = () => {
+  const [rooms, setRooms] = useState([]);
+
+  const fetchRooms = useCallback(async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/chambres');
+      const data = await response.json();
+      setRooms(data);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des chambres:', error);
+    }
+  }, []);
+
   return (
     <Router>
       <Routes>
@@ -77,13 +83,11 @@ const App = () => {
         <Route path="/inscription" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><SignupForm /></ErrorBoundary></Suspense>} />
         <Route path="/connexion" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><LoginForm /></ErrorBoundary></Suspense>} />
         <Route path="/liste_chambres/:hotelId" element={<HotelRooms />} />
+        <Route path="/chambres/:hotelId" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><ChambreList /></ErrorBoundary></Suspense>} /> {/* Ajoutez cette ligne */}
         <Route path="/dashboard" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><Dashboard /></ErrorBoundary></Suspense>} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/ajouter_chambre" element={<AddChambre />} />
-        <Route path="/rooms" element={<RoomList />} /> {/* Ajout de la route RoomList */}
-
-        
-
+        <Route path="/ajouter_chambre" element={<AddChambre fetchRooms={fetchRooms} />} /> {/* Pass fetchRooms here */}
+        <Route path="/rooms" element={<RoomList />} />
       </Routes>
     </Router>
   );

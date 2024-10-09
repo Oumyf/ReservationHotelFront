@@ -28,6 +28,8 @@ const TestimonialCarousel = () => {
   ];
 
   return (
+    <section>
+          <h2 className='temoignage_h2'>Quelques Témoignages</h2>
     <div className="testimonial-carousel">
       <h2>Ce que nos clients disent de nous</h2>
       <div className="carousel-container">
@@ -43,6 +45,8 @@ const TestimonialCarousel = () => {
         ))}
       </div>
     </div>
+    </section>
+
   );
 };
 

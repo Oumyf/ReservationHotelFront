@@ -1,16 +1,54 @@
 .pricing-section {
-  background-color: #e6f0ff;
-  padding: 20px;
+  text-align: center;
+  padding: 2rem;
 }
 
-.pricing {
+.plans-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 2rem;
 }
 
-.price-plan {
-  padding: 15px;
-  background-color: white;
-  border: 1px solid #ddd;
-  width: 30%;
+.plan-card {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  text-align: center;
+  width: 300px;
+}
+
+.plan-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #FFFFFF;
+  background-color: #884513;
+}
+
+.plan-card h4 {
+  font-size: 2rem;
+  color: #8a4f2d;
+}
+
+.plan-card ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.plan-card li {
+  margin: 0.5rem 0;
+}
+
+.plan-card button {
+  background-color: #8a4f2d;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.plan-card button:hover {
+  background-color: #6f3d23;
 }

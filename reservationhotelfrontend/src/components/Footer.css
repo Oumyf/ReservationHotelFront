@@ -1,34 +1,65 @@
 .footer {
-  background-color: rgba(136, 69, 19, 0.4);
-  color: white;
-  padding: 20px;
-  margin-top: 20px;
+  background-color: #8a4f2d;
+  color: #fff;
+  padding: 2rem 0;
+  text-align: center;
 }
 
 .footer-content {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 0 5rem;
 }
 
-.footer-left, .footer-middle, .footer-right {
-  flex: 1;
-}
-
-.footer-menu, .social-links {
-  list-style: none;
+.footer-links {
+  list-style-type: none;
   padding: 0;
 }
 
-.footer-menu li, .social-links li {
-  margin: 5px 0;
+.footer-links li {
+  margin-bottom: 0.5rem;
 }
 
-.footer-menu a, .social-links a {
-  color: white;
+.footer-links a {
+  color: #fff;
   text-decoration: none;
-  transition: color 0.3s;
 }
 
-.footer-menu a:hover, .social-links a:hover {
-  color: #f0c14b;
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.social-links a {
+  margin: 0 1rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.newsletter {
+  text-align: left;
+}
+
+.newsletter-signup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.newsletter-signup input {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: none;
+}
+
+.newsletter-signup button {
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  color: #8a4f2d;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.newsletter-signup button:hover {
+  background-color: #f2f2f2;
 }
