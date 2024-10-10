@@ -26,7 +26,7 @@ const PartenaireHotelSection = () => {
   }, []);
 
   const handleExploreClick = (id) => {
-    navigate(`/hotel/${id}`);
+    navigate(`/hotels/${id}`);
   };
 
   return (

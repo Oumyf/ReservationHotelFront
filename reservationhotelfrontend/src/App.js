@@ -79,7 +79,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/hotel/:id" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><HotelDetails /></ErrorBoundary></Suspense>} />
+        <Route path="/hotels/:hotelId" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><HotelDetails /></ErrorBoundary></Suspense>} />
         <Route path="/inscription" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><SignupForm /></ErrorBoundary></Suspense>} />
         <Route path="/connexion" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><LoginForm /></ErrorBoundary></Suspense>} />
         <Route path="/liste_chambres/:hotelId" element={<HotelRooms />} />
