@@ -7,6 +7,10 @@ import LoaderComponent from "./components/LoaderComponent";
 import HotelRooms from "./components/HotelRooms";
 import AddChambre from './components/Rooms/AddChambre';
 import RoomList from './components/Rooms/RoomList';
+import Reservation from "./Reservation";
+import PrivateRoute from "./components/PrivateRoute";
+import Payment from "./Payment";
+
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -88,6 +92,25 @@ const App = () => {
         <Route path="*" element={<NotFound />} />
         <Route path="/ajouter_chambre" element={<AddChambre fetchRooms={fetchRooms} />} /> {/* Pass fetchRooms here */}
         <Route path="/rooms" element={<RoomList />} />
+         {/* Route de réservation protégée */}
+         <Route 
+          path="/reservation" 
+          element={
+            <PrivateRoute>
+              <Reservation />
+            </PrivateRoute>
+          } 
+        />
+
+        {/* Route de paiement */}
+        <Route 
+          path="/payment" 
+          element={
+            <PrivateRoute>
+              <Payment />
+            </PrivateRoute>
+          } 
+        />
       </Routes>
     </Router>
   );
