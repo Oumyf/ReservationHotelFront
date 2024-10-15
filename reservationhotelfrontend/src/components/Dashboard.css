@@ -1,9 +1,75 @@
+/* Styles pour le Dashboard global */
 .dashboard {
-    display: flex;
-  }
-  
-  .main-content {
-    flex-grow: 1;
-    padding: 20px;
-  }
-  
+  display: flex;
+  background-color: #f4f4f4;
+}
+
+/* Styles pour la Sidebar */
+.sidebar {
+  width: '100px';
+  background-color: #f5f0d7;
+  height: '100vh';
+  padding: '20px';
+  display: 'flex';
+  flex-direction: 'column';
+  align-items: 'center';
+};
+.logo {
+  text-align: 'center';
+  margin-bottom: '20px';
+};
+.sidebarList {
+  list-style-type: 'none';
+  padding: 0;
+  width: '100%';
+};
+.sidebarItem {
+  display: 'flex';
+  align-items: 'center';
+  margin-bottom: '15px';
+  padding: '10px';
+  background-color: '#dec6a5';
+  border-radius: '8px';
+};
+.icon {
+  margin-right: '10px';
+  font-size: '24px';
+};
+link {
+  text-decoration: 'none';
+  color: '#000';
+  font-weight: 'bold';
+};
+
+/* Contenu principal */
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.Donnees {
+  background-image: url('./ndiaye.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  padding: 20px;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-menu li {
+  padding: 10px 0;
+}

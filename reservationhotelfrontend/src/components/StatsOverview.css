@@ -1,7 +1,119 @@
-/* Placeholder styles for Stats Overview */
 .stats-overview {
-    display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  background-image: url('./ndiaye.png');
+  background-repeat: no-repeat;
+  height: 700px;
+  /* padding: 20px; */
+  border-radius: 10px;
+  margin-top: -20px;
+  margin-left: 30px;
+}
+
+.stat-item {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-right: 140vh;
+}
+
+.stat-item h2 {
+  margin-top: 80px;
+  font-size: 3rem;
+  color: #ffffff; /* Couleur personnalisée */
+  margin-left: 50px;
+}
+
+.stat-item p {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-top: -30px;
+  margin-left: 50px;
+
+
+}
+
+/* Section des détails avec les cartes */
+.stat-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
+  gap: 20px; /* Espacement entre les cartes */
+  margin-top: 20px;
+  margin-left: 0;
+  width: 100%; /* Occupation maximale de la largeur disponible */
+  justify-items: center; /* Centrer les cartes horizontalement */
+}
+
+/* Cartes individuelles */
+.detail-box {
+  background-color: #f5f5dc; /* Couleur beige par défaut */
+  /* padding: 5px; */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 150px;
+  height: 150px;
+}
+
+.detail-box:nth-child(2) {
+  background-color: #F5F5DC; /* Couleur marron pour la carte du milieu */
+  color: #8b4513; /* Texte en blanc pour un meilleur contraste */
+}
+
+
+
+.detail-box img {
+  width: 50px;
+  margin-bottom: 10px;
+}
+
+.detail-box p {
+  margin-top: -10px;
+  margin-bottom: -40px;
+  font-size: 1.2rem;
+  color: rgba(136, 36, 19, 0.7);
+}
+
+.detail-box h2 {
+  margin-bottom: -50px;
+  font-size: 2.5rem;
+  color: rgba(136, 36, 19, 0.9);
+}
+
+.detail-box:hover {
+  background-color: #ececec; /* Couleur de survol */
+  transition: background-color 0.3s ease;
+}
+
+/* Couleur survol spécifique pour la carte du milieu */
+.detail-box:nth-child(2):hover {
+  background-color: #6b3b0a; /* Couleur plus foncée au survol pour la carte marron */
+}
+
+
+.detail-box1 {
+  background-color: #fff;
+  padding: 10px;
+  flex-grow: 1;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 10px;
+  margin-left: 90px;
+  /* margin-right: 10px; */
+  background-color: #F5F5DC;
+  color: rgba(136, 36, 19, 0.7);
+  width: 200px;
+}
+
+.detail-box:first-child {
+  margin-left: 0;
+}
+
+.detail-box:last-child {
+  margin-right: 0;
+}
+
+.detail-box:hover {
+  background-color: #ececec;
+}
+

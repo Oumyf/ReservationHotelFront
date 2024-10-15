@@ -1,6 +1,91 @@
-/* Placeholder styles for Reservation List */
-.reservation-list {
-    padding: 10px;
-    font-family: Arial, sans-serif;
-  }
-  
+/* Conteneur principal */
+.main-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px; /* Vous pouvez ajuster cette valeur */
+  background-color: #f5f0d7;
+  height: 100vh;
+  overflow-y: auto; /* Pour gérer le contenu long dans la sidebar */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Conteneur de la liste des réservations */
+.reservation-list-container {
+  flex-grow: 1; /* Pour que la liste des réservations occupe tout l'espace disponible */
+  margin: 20px auto;
+  padding: 20px;
+  width: 80%; /* Vous pouvez ajuster cette largeur si nécessaire */
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: hidden;
+}
+
+/* Titre */
+.title {
+  text-align: center;
+  font-size: 2rem;
+  color: #8b4513;
+  margin-bottom: 20px;
+}
+
+/* Table de réservations */
+.reservation-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.reservation-table th, .reservation-table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.reservation-table th {
+  background-color: #8b4513;
+  color: #fff;
+  font-weight: bold;
+}
+
+.reservation-table td {
+  background-color: #fff;
+  color: #333;
+}
+
+.reservation-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 1.2rem;
+  color: #8b4513;
+}

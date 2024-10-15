@@ -12,7 +12,7 @@ const Reservation = ({ reservationId }) => {
       // Stocker temporairement l'ID de la réservation dans le localStorage
       localStorage.setItem('pendingReservationId', reservationId);
       // Rediriger vers la page de connexion
-      navigate('/login');
+      navigate('/connexion');
     } else {
       // Rediriger directement vers la page de paiement
       navigate(`/payment?reservationId=${reservationId}`);

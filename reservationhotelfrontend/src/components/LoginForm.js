@@ -1,52 +1,66 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import Swal from 'sweetalert2'; // Importer SweetAlert2
-import './LoginForm.css'; // Importer le fichier CSS pour styliser le formulaire
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import './LoginForm.css';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(false); // État de chargement
+  const navigate = useNavigate();
 
-  // Gestion de la soumission du formulaire
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true); // Démarrer le chargement
+    setLoading(true);
+    setErrorMessage('');
 
     try {
-      const response = await axios.post('http://localhost:8000/api/login', {
-        email,
-        password,
+      const response = await fetch('http://localhost:8000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
       });
 
-      // Stocker le token et l'ID utilisateur dans le localStorage
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userId', response.data.user.id); // Stocker l'ID utilisateur
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erreur lors de la connexion. Veuillez vérifier vos informations.');
+      }
 
-      // Afficher une alerte SweetAlert de succès
+      const data = await response.json();
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userId', data.user.id);
+      localStorage.setItem('userRole', data.user.role);
+
       Swal.fire({
         icon: 'success',
         title: 'Connexion réussie',
         text: 'Vous êtes maintenant connecté!',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
       });
 
-      // Rediriger l'utilisateur vers la page des paiements
-      window.location.href = 'http://localhost:8000/api/payments/pay'; // Remplacer par l'URL de redirection
+      // Redirect based on the user role
+      if (data.user.role === 'hotel') {
+        navigate('/dashboard'); // Redirect to dashboard for hotels
+      } else if (data.user.role === 'client') {
+        navigate('/payment'); // Redirect to payment page for clients
+      } else {
+        navigate('/dashboard'); // Default redirection to dashboard for other roles
+      }
 
     } catch (error) {
-      setErrorMessage('Erreur lors de la connexion. Veuillez vérifier vos informations.');
-
-      // Afficher une alerte d'erreur avec SweetAlert
+      setErrorMessage(error.message);
       Swal.fire({
         icon: 'error',
         title: 'Erreur de connexion',
-        text: error.response?.data?.message || 'Une erreur est survenue lors de la tentative de connexion. Veuillez réessayer.',
-        confirmButtonText: 'OK'
+        text: error.message,
+        confirmButtonText: 'OK',
       });
     } finally {
-      setLoading(false); // Arrêter le chargement
+      setLoading(false);
     }
   };
 
@@ -54,28 +68,32 @@ const LoginForm = () => {
     <div className="login-container">
       <div className="login-box">
         <h2 className="login-title">Connexion</h2>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="exemple@gmail.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="************"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit" className="login-btn" disabled={loading}>
-            {loading ? 'Chargement...' : 'Se connecter'}
+          <div>
+            <label>Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Mot de passe:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button className="login-btn" type="submit" disabled={loading}>
+            {loading ? 'Connexion...' : 'Se connecter'}
           </button>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
         </form>
         <p className="signup-link">
-          Vous n'avez pas de compte ? <a href="/inscription">Inscrivez-vous</a>
+          Pas de compte ? <a href="/inscription">Inscrivez-vous ici</a>
         </p>
       </div>
     </div>

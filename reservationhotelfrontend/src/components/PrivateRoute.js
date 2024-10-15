@@ -1,14 +1,21 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-// Simuler une fonction pour vérifier si l'utilisateur est connecté
-const isAuthenticated = () => {
-  // Par exemple, vérifier s'il y a un token dans le localStorage
-  return localStorage.getItem('userToken') !== null;
-};
+const PrivateRoute = ({ children, allowedRoles }) => {
+  const user = JSON.parse(localStorage.getItem('user')); // Assuming user info is stored in localStorage
+  const userRole = user ? user.role : null;
 
-const PrivateRoute = ({ children }) => {
-  return isAuthenticated() ? children : <Navigate to="/connexion" />;
+  if (!user) {
+    // If the user is not logged in, redirect to login page
+    return <Navigate to="/connexion" />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
+    // If the user's role is not allowed, redirect to NotFound or a forbidden page
+    return <Navigate to="/not-authorized" />;
+  }
+
+  return children; // Render the children if user is authorized
 };
 
 export default PrivateRoute;

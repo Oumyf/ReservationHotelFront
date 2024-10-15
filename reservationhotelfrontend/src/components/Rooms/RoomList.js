@@ -1,13 +1,17 @@
+// RoomList.js
+
 import React, { useEffect, useState } from 'react';
 import RoomCard from './RoomCard';
-import AddChambre from './AddChambre'; // Make sure to import AddChambre
+import AddChambre from './AddChambre';
 import Swal from 'sweetalert2';
+import Sidebar from '../Sidebar'; // Import Sidebar
 import './RoomList.css';
 
 const RoomList = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedRoom, setSelectedRoom] = useState(null); // New state for selected room
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [showAddChambre, setShowAddChambre] = useState(false);
 
   useEffect(() => {
     fetchRooms();
@@ -31,7 +35,8 @@ const RoomList = () => {
   };
 
   const handleEdit = (room) => {
-    setSelectedRoom(room); // Set the selected room for editing
+    setSelectedRoom(room);
+    setShowAddChambre(true);
   };
 
   const handleDelete = async (roomId) => {
@@ -52,7 +57,7 @@ const RoomList = () => {
         if (!response.ok) {
           throw new Error('Erreur lors de la suppression de la chambre');
         }
-        fetchRooms(); // Refresh the list of rooms after deletion
+        fetchRooms();
         Swal.fire('Supprimé!', 'La chambre a été supprimée.', 'success');
       } catch (error) {
         console.error(error);
@@ -61,9 +66,19 @@ const RoomList = () => {
     }
   };
 
+  const handleAddRoom = () => {
+    setShowAddChambre(true);
+    setSelectedRoom(null);
+  };
+
+  const closeAddChambre = () => {
+    setShowAddChambre(false);
+  };
+
   return (
     <div className="room-list-container">
       <h2>Liste des Chambres</h2>
+      <button className="btn-reserver" onClick={handleAddRoom}>Ajouter une Chambre</button>
       {loading ? (
         <p>Chargement...</p>
       ) : (
@@ -77,16 +92,16 @@ const RoomList = () => {
           )}
         </div>
       )}
-      {selectedRoom && (
+      {showAddChambre && (
         <AddChambre 
-            selectedRoom={selectedRoom} 
-            setSelectedRoom={setSelectedRoom} // Ajout de cette ligne
-            fetchRooms={fetchRooms} 
+          selectedRoom={selectedRoom} 
+          setSelectedRoom={setSelectedRoom} 
+          fetchRooms={fetchRooms} 
+          closeAddChambre={closeAddChambre} 
         />
       )}
     </div>
   );
-  
 };
 
 export default RoomList;

@@ -1,72 +1,97 @@
-.signup-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-image: url('./hotel.png'); 
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: url('./hotel.png') no-repeat center center fixed;
     background-size: cover;
-    background-position: center;
-  }
-  
-  .signup-box {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 40px;
+}
+
+.registration-form {
+    width: 90%;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
     border-radius: 10px;
-    width: 400px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  }
-  
-  .signup-title {
-    font-size: 24px;
+    backdrop-filter: blur(10px); /* Creates the frosted glass effect */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    color: #333;
+}
+
+h2 {
     text-align: center;
     margin-bottom: 20px;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  input {
+    color: #333;
+}
+
+.form-group {
     margin-bottom: 15px;
-    padding: 12px;
-    font-size: 16px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .signup-btn {
-    background-color: #9b6b42; /* Couleur marron pour le bouton */
-    color: white;
-    border: none;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .signup-btn:hover {
-    background-color: #835c36;
-  }
-  
-  .error-message {
+    background: rgba(255, 255, 255, 0.5); /* Semi-transparent input */
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    border-color: #007BFF; /* Change border color on focus */
+    outline: none;
+}
+
+textarea {
+    resize: none; /* Disable resizing */
+    min-height: 100px;
+}
+
+.error {
     color: red;
-    font-size: 14px;
+    font-size: 0.9em;
+}
+
+.submit-button,
+.back-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submit-button {
+    background: #007BFF; /* Primary button color */
+}
+
+.back-button {
+    background: #6c757d; /* Secondary button color */
     margin-top: 10px;
-  }
-  
-  .signin-link {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .signin-link a {
-    color: #9b6b42;
-    text-decoration: none;
-  }
-  
-  .signin-link a:hover {
-    text-decoration: underline;
-  }
-  
+}
+
+.submit-button:hover {
+    background: #0056b3; /* Darker shade on hover */
+}
+
+.back-button:hover {
+    background: #5a6268; /* Darker shade on hover */
+}

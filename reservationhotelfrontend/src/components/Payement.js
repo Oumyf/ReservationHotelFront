@@ -12,7 +12,7 @@ const PaymentForm = () => {
       const response = await axios.post('http://localhost:8000/api/payment', {
         amount,
         currency,
-        paymentMethodId: 'YOUR_PAYMENT_METHOD_ID', // Ajoutez ici le moyen de paiement
+        paymentMethodId: 'YOUR_PAYMENT_METHOD_ID',
       });
 
       console.log('Paiement réussi:', response.data);

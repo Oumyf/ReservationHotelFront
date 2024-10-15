@@ -1,108 +1,196 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import './SignUpForm.css'; 
-import Swal from 'sweetalert2'; 
+import './SignUpForm.css';
+import Swal from 'sweetalert2';
 
+const RegistrationForm = () => {
+    const [formData, setFormData] = useState({
+        nom: '',
+        email: '',
+        password: '',
+        telephone: '',
+        adresse: '',
+        role: 'client', // Valeur par défaut
+        nombre_etoiles: '',
+        description: '',
+        logo: null,
+        hotelNom: '',
+    });
 
-const SignupForm = () => {
-  const [nom, setNom] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [telephone, setTelephone] = useState('');
-  const [adresse, setAdresse] = useState('');
-  const [role, setRole] = useState('user'); // Default role
-  const [errorMessage, setErrorMessage] = useState('');
+    const [errors, setErrors] = useState({});
+    const [step, setStep] = useState(1);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+        setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+    };
 
-    try {
-      const response = await axios.post('http://localhost:8000/api/register', {
-        nom,
-        email,
-        password,
-        telephone,
-        adresse,
-        role,
-      });
+    const handleFileChange = (e) => {
+        setFormData((prevData) => ({ ...prevData, logo: e.target.files[0] }));
+        setErrors((prevErrors) => ({ ...prevErrors, logo: '' }));
+    };
 
-      // Afficher une alerte de succès avec SweetAlert
-      Swal.fire({
-        icon: 'success',
-        title: 'Inscription réussie',
-        text: 'Vous avez été inscrit avec succès!',
-        confirmButtonText: 'OK'
-      });
+    const validateStep1 = () => {
+        const newErrors = {};
+        if (!formData.nom.trim()) newErrors.nom = 'Le nom est requis.';
+        if (!formData.email.trim()) newErrors.email = 'L\'email est requis.';
+        if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'L\'email doit être valide.';
+        if (!formData.password.trim()) newErrors.password = 'Le mot de passe est requis.';
+        if (formData.password.length < 6) newErrors.password = 'Le mot de passe doit contenir au moins 6 caractères.';
+        if (!formData.telephone.trim()) newErrors.telephone = 'Le téléphone est requis.';
+        if (!/^\+?\d{8,15}$/.test(formData.telephone)) newErrors.telephone = 'Le numéro de téléphone doit être valide.';
+        if (!formData.adresse.trim()) newErrors.adresse = 'L\'adresse est requise.';
 
-      console.log('Inscription réussie', response.data);
-    } catch (error) {
-      setErrorMessage('Erreur lors de l\'inscription. Veuillez réessayer.');
+        return newErrors;
+    };
 
-      // Afficher une alerte d'erreur avec SweetAlert
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Une erreur est survenue lors de l\'inscription.',
-        confirmButtonText: 'OK'
-      });
-    }
-  };
+    const validateStep2 = () => {
+        const newErrors = {};
+        if (formData.role === 'hotel') {
+            if (!formData.hotelNom.trim()) newErrors.hotelNom = 'Le nom de l\'hôtel est requis.';
+            if (!formData.nombre_etoiles.trim()) newErrors.nombre_etoiles = 'Le nombre d\'étoiles est requis.';
+            if (isNaN(formData.nombre_etoiles) || formData.nombre_etoiles < 1 || formData.nombre_etoiles > 5) {
+                newErrors.nombre_etoiles = 'Le nombre d\'étoiles doit être un nombre entre 1 et 5.';
+            }
+            if (!formData.description.trim()) newErrors.description = 'La description est requise.';
+            if (formData.description.length < 10) newErrors.description = 'La description doit contenir au moins 10 caractères.';
+            if (!formData.logo) newErrors.logo = 'Le logo est requis.';
+        }
 
-  return (
-    <div className="signup-container">
-      <div className="signup-box">
-        <h2 className="signup-title">Inscription</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Nom complet"
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
-            required
-          />
-          <input
-            type="email"
-            placeholder="exemple@gmail.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="************"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Numéro de téléphone"
-            value={telephone}
-            onChange={(e) => setTelephone(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Adresse"
-            value={adresse}
-            onChange={(e) => setAdresse(e.target.value)}
-            required
-          />
-          <label>Rôle:</label>
-          <select value={role} onChange={(e) => setRole(e.target.value)} required>
-            <option value="user">Utilisateur</option>
-            <option value="hotel">Hôtel</option>
-            <option value="admin">Admin</option>
-          </select>
-          <button type="submit" className="signup-btn">S'inscrire</button>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-        </form>
-        <p className="signin-link">
-          Vous avez déjà un compte ? <a href="/connexion">connectez-vous</a>
+        return newErrors;
+    };
+
+    const handleNextStep = (e) => {
+        e.preventDefault();
+        let validationErrors = {};
+        if (step === 1) {
+            validationErrors = validateStep1();
+        } else if (step === 2) {
+            validationErrors = validateStep2();
+        }
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+        setStep((prevStep) => prevStep + 1);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const formDataToSend = new FormData();
+        for (const key in formData) {
+            formDataToSend.append(key, formData[key]);
+        }
+
+        try {
+            const response = await fetch('http://localhost:8000/api/register', {
+                method: 'POST',
+                body: formDataToSend,
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Une erreur est survenue');
+            }
+
+            const data = await response.json();
+            console.log(data.message);
+            Swal.fire('Succès!', 'Inscription réussie!', 'success');
+            setFormData({
+                nom: '',
+                email: '',
+                password: '',
+                telephone: '',
+                adresse: '',
+                role: 'client',
+                nombre_etoiles: '',
+                description: '',
+                logo: null,
+                hotelNom: '',
+            }); // Reset form data after successful registration
+        } catch (error) {
+            console.error('Erreur lors de l\'inscription:', error.message);
+            Swal.fire('Erreur!', error.message, 'error');
+        }
+    };
+
+    return (
+        <form onSubmit={step === 2 ? handleSubmit : handleNextStep} className="registration-form">
+            <h2>Inscription</h2>
+            {step === 1 && (
+                <>
+                    <div className="form-group">
+                        <label htmlFor="role">Rôle</label>
+                        <select id="role" name="role" value={formData.role} onChange={handleChange}>
+                            <option value="client">Client</option>
+                            <option value="hotel">Hôtel</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="nom">Nom</label>
+                        <input type="text" id="nom" name="nom" value={formData.nom} onChange={handleChange} />
+                        {errors.nom && <p className="error">{errors.nom}</p>}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
+                        {errors.email && <p className="error">{errors.email}</p>}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Mot de passe</label>
+                        <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} />
+                        {errors.password && <p className="error">{errors.password}</p>}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="telephone">Téléphone</label>
+                        <input type="text" id="telephone" name="telephone" value={formData.telephone} onChange={handleChange} />
+                        {errors.telephone && <p className="error">{errors.telephone}</p>}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="adresse">Adresse</label>
+                        <input type="text" id="adresse" name="adresse" value={formData.adresse} onChange={handleChange} />
+                        {errors.adresse && <p className="error">{errors.adresse}</p>}
+                    </div>
+                    <button type="submit">Suivant</button>
+                </>
+            )}
+
+            {step === 2 && (
+                <>
+                    {formData.role === 'hotel' && (
+                        <>
+                            <div className="form-group">
+                                <label htmlFor="hotelNom">Nom de l'Hôtel</label>
+                                <input type="text" id="hotelNom" name="hotelNom" value={formData.hotelNom} onChange={handleChange} />
+                                {errors.hotelNom && <p className="error">{errors.hotelNom}</p>}
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="nombre_etoiles">Nombre d'Étoiles</label>
+                                <input type="number" id="nombre_etoiles" name="nombre_etoiles" value={formData.nombre_etoiles} onChange={handleChange} />
+                                {errors.nombre_etoiles && <p className="error">{errors.nombre_etoiles}</p>}
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="description">Description</label>
+                                <textarea id="description" name="description" value={formData.description} onChange={handleChange} />
+                                {errors.description && <p className="error">{errors.description}</p>}
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="logo">Logo</label>
+                                <input type="file" id="logo" name="logo" accept="image/*" onChange={handleFileChange} />
+                                {errors.logo && <p className="error">{errors.logo}</p>}
+                            </div>
+                        </>
+                    )}
+                    <button type="submit">S'inscrire</button>
+                </>
+            )}
+               <p className="signup-link">
+          Pas de compte ? <a href="/connexion">Inscrivez-vous ici</a>
         </p>
-      </div>
-    </div>
-  );
+        </form>
+        
+    );
 };
 
-export default SignupForm;
+export default RegistrationForm;

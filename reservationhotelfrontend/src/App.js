@@ -10,7 +10,7 @@ import RoomList from './components/Rooms/RoomList';
 import Reservation from "./Reservation";
 import PrivateRoute from "./components/PrivateRoute";
 import Payment from "./Payment";
-
+import ReservationList from "./components/ReservationList";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -41,7 +41,6 @@ const PartnerHotelSection = lazy(() => import("./components/page_accueil/section
 const PopularRooms = lazy(() => import("./components/page_accueil/section_chambres/PopularRooms"));
 const TestimonialCarousel = lazy(() => import("./components/page_accueil/section_temoignages/TestimonialCarousel"));
 const PricingSection = lazy(() => import("./components/page_accueil/section_prix/PricingSection"));
-// const HotelList = lazy(() => import("./components/HotelList"));
 const HotelDetails = lazy(() => import("./components/HotelDetails"));
 const SignupForm = lazy(() => import("./components/SignUpForm"));
 const LoginForm = lazy(() => import("./components/LoginForm"));
@@ -87,30 +86,56 @@ const App = () => {
         <Route path="/inscription" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><SignupForm /></ErrorBoundary></Suspense>} />
         <Route path="/connexion" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><LoginForm /></ErrorBoundary></Suspense>} />
         <Route path="/liste_chambres/:hotelId" element={<HotelRooms />} />
-        <Route path="/chambres/:hotelId" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><ChambreList /></ErrorBoundary></Suspense>} /> {/* Ajoutez cette ligne */}
-        <Route path="/dashboard" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><Dashboard /></ErrorBoundary></Suspense>} />
+        <Route path="/chambres/:hotelId" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><ChambreList /></ErrorBoundary></Suspense>} />
+        
+        {/* Protected routes for hotel users */}
+        <Route 
+          path="/dashboard" 
+          element={
+            <PrivateRoute >
+              <Suspense fallback={<LoaderComponent />}><ErrorBoundary><Dashboard /></ErrorBoundary></Suspense>
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/ajouter_chambre" 
+          element={
+            <PrivateRoute allowedRoles={['hotel']}>
+              <AddChambre fetchRooms={fetchRooms} />
+            </PrivateRoute>
+          } 
+        /> 
+        <Route 
+          path="/rooms" 
+          element={
+            <PrivateRoute allowedRoles={['hotel']}>
+              <RoomList />
+            </PrivateRoute>
+          } 
+        />
         <Route path="*" element={<NotFound />} />
-        <Route path="/ajouter_chambre" element={<AddChambre fetchRooms={fetchRooms} />} /> {/* Pass fetchRooms here */}
-        <Route path="/rooms" element={<RoomList />} />
-         {/* Route de réservation protégée */}
-         <Route 
+        
+        {/* Protected route for reservations */}
+        <Route 
           path="/reservation" 
           element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={['client']}>
               <Reservation />
             </PrivateRoute>
           } 
         />
-
+        
         {/* Route de paiement */}
         <Route 
-          path="/payment" 
+          path="/payment/:reservationId" 
           element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={['client']}>
               <Payment />
             </PrivateRoute>
           } 
         />
+        
+        <Route path="/reservations" element={<ReservationList />} />
       </Routes>
     </Router>
   );

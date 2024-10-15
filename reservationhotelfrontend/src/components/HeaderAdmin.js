@@ -1,20 +1,18 @@
 import React from 'react';
-import './Header.css';
-import fabi from './fabi.JPG';
+import './HeaderAdmin.css';
+import { FaBell } from 'react-icons/fa';  // Importer une icône de cloche
 
-
-const headerAdmin = ({ user }) => {
+const HeaderAdmin = ({ user }) => {
   return (
-    <div className="headerAdminheaderAdmin">
-      <div>
+    <div className="headerAdmin">
+       <div>
         <h1>Bonjour, <span>{user}</span></h1>
       </div>
       <div className="user-profile">
-        <img src={"/path/to/profile-image.jpg"} alt="profile" className="profile-img" />
-        <span>Mr Diagne</span>
-      </div>
+        <span><FaBell className="notification-icon" /> Mr Diagne </span>
+       </div>
     </div>
   );
 };
 
-export default headerAdmin;
+export default HeaderAdmin;
