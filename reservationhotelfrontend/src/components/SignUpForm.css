@@ -95,3 +95,38 @@ textarea {
 .back-button:hover {
     background: #5a6268; /* Darker shade on hover */
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .registration-form {
+        margin: 20px; /* Reduce margin on smaller screens */
+        padding: 15px; /* Reduce padding */
+    }
+
+    h2 {
+        font-size: 1.5em; /* Smaller heading size */
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    textarea {
+        padding: 8px; /* Reduce input padding */
+    }
+
+    .submit-button,
+    .back-button {
+        padding: 8px; /* Reduce button padding */
+    }
+}
+
+@media (max-width: 480px) {
+    .registration-form {
+        width: 95%; /* Allow form to take more width on very small screens */
+    }
+
+    h2 {
+        font-size: 1.2em; /* Smaller heading size */
+    }
+}

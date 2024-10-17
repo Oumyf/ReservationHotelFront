@@ -1,29 +1,54 @@
-import React, { useState } from "react";
+// Header.js
+import React, { useState, useEffect } from "react";
 import "./Header.css";
 import logo from '../logo.png';
-import chambre_banniere from './chambrebanniere.png';
 import { useNavigate } from "react-router-dom";
+import AuthService from '../AuthService'; // Assurez-vous d'importer votre service d'authentification
 
 const Header = () => {
   const [departureDate, setDepartureDate] = useState('');
   const [arrivalDate, setArrivalDate] = useState('');
   const [destination, setDestination] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // État pour gérer la connexion
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Vérifiez si l'utilisateur est connecté en regardant le token
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const handleSearch = () => {
-    // Vérifier que tous les champs sont remplis avant de naviguer
     if (departureDate && arrivalDate && destination) {
-      // Rediriger vers la page de résultats de recherche avec les paramètres
       navigate(`/search?departure=${departureDate}&arrival=${arrivalDate}&destination=${destination}`);
     } else {
       alert("Veuillez remplir tous les champs.");
     }
   };
 
-  // Filtrer les recettes en fonction du terme de recherche
-//   const filteredRecettes = recettes.filter(recette =>
-//     recette.nom.toLowerCase().includes(searchTerm.toLowerCase())
-// );
+  const handleLogin = async () => {
+    try {
+      await AuthService.login(); 
+      setIsLoggedIn(true);
+      navigate('/'); 
+    } catch (error) {
+      console.error('Erreur lors de la connexion:', error);
+      alert("Erreur lors de la connexion. Veuillez réessayer."); // Alerte pour l'utilisateur
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await AuthService.logout(); 
+      setIsLoggedIn(false); 
+      navigate('/'); 
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+      alert("Erreur lors de la déconnexion. Veuillez réessayer."); // Alerte pour l'utilisateur
+    }
+  };
 
   return (
     <section className="recherche">
@@ -44,7 +69,11 @@ const Header = () => {
             </li>
           </ul>
           <div className="login-btn">
-            <button>Connexion</button>
+            {isLoggedIn ? (
+              <button onClick={handleLogout}>Déconnexion</button>
+            ) : (
+              <button onClick={handleLogin}>Connexion</button>
+            )}
           </div>
         </nav>
         <div className="hero-content">

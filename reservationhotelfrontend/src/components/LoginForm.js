@@ -44,11 +44,11 @@ const LoginForm = () => {
 
       // Redirect based on the user role
       if (data.user.role === 'hotel') {
-        navigate('/dashboard'); // Redirect to dashboard for hotels
+        navigate('/dashboard'); 
       } else if (data.user.role === 'client') {
-        navigate('/payment'); // Redirect to payment page for clients
+        navigate('/confirmationReservation'); 
       } else {
-        navigate('/dashboard'); // Default redirection to dashboard for other roles
+        navigate('/confirmationReservation'); 
       }
 
     } catch (error) {

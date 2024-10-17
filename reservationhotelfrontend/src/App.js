@@ -1,3 +1,4 @@
+// App.js
 import React, { lazy, Suspense, useCallback, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
@@ -11,6 +12,8 @@ import Reservation from "./Reservation";
 import PrivateRoute from "./components/PrivateRoute";
 import Payment from "./Payment";
 import ReservationList from "./components/ReservationList";
+import ConfirmationPage from "./components/ConfirmationReservation";
+// import RegistrationPage from "./components/RegistrationPage";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -42,7 +45,7 @@ const PopularRooms = lazy(() => import("./components/page_accueil/section_chambr
 const TestimonialCarousel = lazy(() => import("./components/page_accueil/section_temoignages/TestimonialCarousel"));
 const PricingSection = lazy(() => import("./components/page_accueil/section_prix/PricingSection"));
 const HotelDetails = lazy(() => import("./components/HotelDetails"));
-const SignupForm = lazy(() => import("./components/SignUpForm"));
+const RegistrationPage = lazy(() => import("./components/RegistrationPage"));
 const LoginForm = lazy(() => import("./components/LoginForm"));
 const ChambreList = lazy(() => import("./components/ChambreList"));
 const Dashboard = lazy(() => import("./components/Dashboard"));
@@ -83,16 +86,17 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/hotels/:hotelId" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><HotelDetails /></ErrorBoundary></Suspense>} />
-        <Route path="/inscription" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><SignupForm /></ErrorBoundary></Suspense>} />
+        <Route path="/inscription" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><RegistrationPage /></ErrorBoundary></Suspense>} />
         <Route path="/connexion" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><LoginForm /></ErrorBoundary></Suspense>} />
         <Route path="/liste_chambres/:hotelId" element={<HotelRooms />} />
         <Route path="/chambres/:hotelId" element={<Suspense fallback={<LoaderComponent />}><ErrorBoundary><ChambreList /></ErrorBoundary></Suspense>} />
-        
-        {/* Protected routes for hotel users */}
+        <Route path="/confirmationReservation" element={<ConfirmationPage />} />
+
+        {/* Routes protégées pour les utilisateurs hôtels */}
         <Route 
           path="/dashboard" 
           element={
-            <PrivateRoute >
+            <PrivateRoute allowedRoles={['hotel']}>
               <Suspense fallback={<LoaderComponent />}><ErrorBoundary><Dashboard /></ErrorBoundary></Suspense>
             </PrivateRoute>
           } 
@@ -113,9 +117,8 @@ const App = () => {
             </PrivateRoute>
           } 
         />
-        <Route path="*" element={<NotFound />} />
         
-        {/* Protected route for reservations */}
+        {/* Route protégée pour les réservations */}
         <Route 
           path="/reservation" 
           element={
@@ -136,8 +139,15 @@ const App = () => {
         />
         
         <Route path="/reservations" element={<ReservationList />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
+
+
     </Router>
+
+
+
+
   );
 };
 

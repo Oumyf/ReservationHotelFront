@@ -6,12 +6,10 @@ const PrivateRoute = ({ children, allowedRoles }) => {
   const userRole = user ? user.role : null;
 
   if (!user) {
-    // If the user is not logged in, redirect to login page
     return <Navigate to="/connexion" />;
   }
 
   if (allowedRoles && !allowedRoles.includes(userRole)) {
-    // If the user's role is not allowed, redirect to NotFound or a forbidden page
     return <Navigate to="/not-authorized" />;
   }
 
