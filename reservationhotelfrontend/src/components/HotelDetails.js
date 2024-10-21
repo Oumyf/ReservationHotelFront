@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios'; // Assurez-vous d'importer Axios
+import axios from 'axios';
 import hotel from './hotel.png';
 import './HotelDetails.css';
 
@@ -17,8 +17,35 @@ const HotelDetails = () => {
     nom: '',
   });
   const [hotelData, setHotelData] = useState({});
-  const userId = localStorage.getItem('userId');
+  const [reservationId, setReservationId] = useState(null);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user ? user.id : null; 
+    console.log(userId);
   const navigate = useNavigate();
+
+  const checkReservationStatus = async () => {
+    if (!reservationId) return; // Ne pas vérifier si aucune réservation
+
+    try {
+      const response = await axios.get(`http://localhost:8000/api/reservations/${reservationId}/status`);
+      if (response.data.status === 'confirmed') {
+        alert('Votre réservation a été confirmée!');
+        // Ici, vous pouvez rediriger l'utilisateur ou mettre à jour l'état
+        // Par exemple, navigate('/confirmation');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la vérification du statut de la réservation:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Vérification du statut de réservation toutes les 5 secondes
+    const interval = setInterval(() => {
+      checkReservationStatus();
+    }, 5000);
+
+    return () => clearInterval(interval); // Nettoyage de l'intervalle
+  }, [reservationId]);
 
   const handleReservation = async () => {
     if (!userId) {
@@ -54,15 +81,17 @@ const HotelDetails = () => {
       email,
       nom,
       chambre_id: selectedChambre.id,
-      montant: selectedChambre.prix, // Ajout du montant de la chambre
-      statut: 'pending', // Statut peut être défini ici si nécessaire
+      montant: selectedChambre.prix,
+      statut: 'pending',
     };
+    console.log(reservationDetails);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/reservations', reservationDetails); // Correction ici
+      const response = await axios.post('http://localhost:8000/api/reservations', reservationDetails);
       if (response.data.paymentUrl) {
         // Rediriger vers l'URL de paiement
         window.location.href = response.data.paymentUrl;
+        setReservationId(response.data.reservationId); // Sauvegarde l'ID de réservation
       } else {
         setError('Erreur lors de la création de la réservation.');
       }
@@ -175,28 +204,33 @@ const HotelDetails = () => {
       </section>
 
       {selectedChambre && (
-        <div className="reservation-modal">
-          <h3>Réserver {selectedChambre.nom}</h3>
-          <label>
-            Date de début:
-            <input type="date" name="date_debut" onChange={handleChange} />
-          </label>
-          <label>
-            Date de fin:
-            <input type="date" name="date_fin" onChange={handleChange} />
-          </label>
-          <label>
-            Nom:
-            <input type="text" name="nom" onChange={handleChange} />
-          </label>
-          <label>
-            Email:
-            <input type="email" name="email" onChange={handleChange} />
-          </label>
-          <button onClick={handleReservation}>Confirmer la réservation</button>
-          <button onClick={() => setSelectedChambre(null)}>Annuler</button>
-        </div>
-      )}
+  <div className="reservation-modal">
+    <h3>Réserver la chambre: {selectedChambre.nom}</h3>
+    <p>Type: {selectedChambre.type}</p>
+    <p>Prix: {selectedChambre.prix} FCFA / nuitée</p>
+    
+    <label>
+      Date de début:
+      <input type="date" name="date_debut" onChange={handleChange} />
+    </label>
+    <label>
+      Date de fin:
+      <input type="date" name="date_fin" onChange={handleChange} />
+    </label>
+    <label>
+      Nom:
+      <input type="text" name="nom" onChange={handleChange} />
+    </label>
+    <label>
+      Email:
+      <input type="email" name="email" onChange={handleChange} />
+    </label>
+    
+    <button onClick={handleReservation}>Confirmer la réservation</button>
+    <button onClick={() => setSelectedChambre(null)}>Annuler</button>
+  </div>
+)}
+
 
       <footer className="hotel-footer">
         <p>&copy; 2024 Keur Teranga. Tous droits réservés.</p>

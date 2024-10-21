@@ -4,6 +4,7 @@ import "./Header.css";
 import logo from '../logo.png';
 import { useNavigate } from "react-router-dom";
 import AuthService from '../AuthService'; // Assurez-vous d'importer votre service d'authentification
+import Swal from "sweetalert2";
 
 const Header = () => {
   const [departureDate, setDepartureDate] = useState('');
@@ -41,12 +42,21 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      await AuthService.logout(); 
-      setIsLoggedIn(false); 
-      navigate('/'); 
+      await AuthService.logout(); // Utilisez AuthService pour se déconnecter
+      Swal.fire({
+        icon: 'success',
+        title: 'Déconnexion réussie',
+        text: 'Vous avez été déconnecté avec succès!',
+        confirmButtonText: 'OK',
+      });
+      navigate('/'); // Redirigez vers la page de connexion
     } catch (error) {
-      console.error('Erreur lors de la déconnexion:', error);
-      alert("Erreur lors de la déconnexion. Veuillez réessayer."); // Alerte pour l'utilisateur
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur de déconnexion',
+        text: error.message,
+        confirmButtonText: 'OK',
+      });
     }
   };
 
