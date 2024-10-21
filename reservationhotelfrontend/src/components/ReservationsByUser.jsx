@@ -3,10 +3,10 @@ import axios from 'axios';
 
 const UserReservations = () => {
   const [reservations, setReservations] = useState([]);
+  const [hotels, setHotels] = useState({});
+  const [rooms, setRooms] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [hotelDetails, setHotelDetails] = useState({});
-  const [roomDetails, setRoomDetails] = useState({});
 
   // Récupérer l'ID de l'utilisateur connecté depuis le localStorage
   const user = JSON.parse(localStorage.getItem('user'));
@@ -22,36 +22,31 @@ const UserReservations = () => {
 
       try {
         const response = await axios.get(`http://localhost:8000/api/reservations/user/${userId}`);
-        setReservations(response.data);
+        const fetchedReservations = response.data;
+        setReservations(fetchedReservations);
 
-        // Récupérer les détails des hôtels et des chambres
-        const hotelIds = response.data.map(reservation => reservation.hotel_id);
-        const roomIds = response.data.map(reservation => reservation.chambre_id);
-        
-        const hotelPromises = hotelIds.map(id => axios.get(`http://localhost:8000/api/hotels/${id}`));
-        const roomPromises = roomIds.map(id => axios.get(`http://localhost:8000/api/chambres/${id}`));
-
-        const hotelResponses = await Promise.all(hotelPromises);
-        const roomResponses = await Promise.all(roomPromises);
-
-        // Stocker les détails des hôtels et des chambres dans des objets
-        const hotelMap = hotelResponses.reduce((acc, curr) => {
-          acc[curr.data._id] = curr.data;
-          return acc;
-        }, {});
-
-        const roomMap = roomResponses.reduce((acc, curr) => {
-          acc[curr.data._id] = curr.data;
-          return acc;
-        }, {});
-
-        setHotelDetails(hotelMap);
-        setRoomDetails(roomMap);
-
+        // Fetch hotel and room data for each reservation
+        fetchedReservations.forEach(reservation => {
+          fetchHotelAndRoomData(reservation);
+        });
       } catch (error) {
         setError(error.response ? error.response.data.message : "Erreur lors de la récupération des réservations");
       } finally {
         setLoading(false); 
+      }
+    };
+
+    const fetchHotelAndRoomData = async (reservation) => {
+      try {
+        // Fetch the hotel for this reservation
+        const hotelResponse = await axios.get(`http://localhost:8000/api/hotels/${reservation.hotel_id}`);
+        setHotels(prevHotels => ({ ...prevHotels, [reservation.hotel_id]: hotelResponse.data }));
+
+        // Fetch the room for this reservation
+        const roomResponse = await axios.get(`http://localhost:8000/api/chambres/${reservation.chambre_id}`);
+        setRooms(prevRooms => ({ ...prevRooms, [reservation.chambre_id]: roomResponse.data }));
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données de l'hôtel ou de la chambre:", error);
       }
     };
 
@@ -66,16 +61,25 @@ const UserReservations = () => {
       <h2>Vos réservations</h2>
       {reservations.length > 0 ? (
         <ul>
-          {reservations.map((reservation) => (
-            <li key={reservation._id}>
-              <p><strong>Hôtel:</strong> {hotelDetails[reservation.hotel_id] ? hotelDetails[reservation.hotel_id].nom_hotel : 'Chargement du nom de l\'hôtel...'}</p>
-              <p><strong>Chambre réservée:</strong> {roomDetails[reservation.chambre_id] ? roomDetails[reservation.chambre_id].nom : 'Chargement du nom de la chambre...'}</p>
-              <p><strong>Prix de la chambre:</strong> {roomDetails[reservation.chambre_id] ? roomDetails[reservation.chambre_id].prix : 'Chargement du prix...'} FCFA</p>
-              <p><strong>Date de début:</strong> {new Date(reservation.date_debut).toLocaleDateString()}</p>
-              <p><strong>Date de fin:</strong> {new Date(reservation.date_fin).toLocaleDateString()}</p>
-              <p><strong>Statut:</strong> {reservation.statut}</p>
-            </li>
-          ))}
+          {reservations.map((reservation) => {
+            const hotel = hotels[reservation.hotel_id];
+            const room = rooms[reservation.chambre_id];
+
+            console.log('Reservation:', reservation); // Vérifiez la réservation
+            console.log('Hotel:', hotel); // Vérifiez l'hôtel
+            console.log('Room:', room); // Vérifiez la chambre
+
+            return (
+              <li key={reservation._id}>
+                <p><strong>Hôtel:</strong> {hotel ? hotel.nom : 'Hôtel inconnu'}</p>
+                <p><strong>Chambre réservée:</strong> {room ? room.nom : 'Chambre inconnue'}</p>
+                <p><strong>Prix de la chambre:</strong> {room ? room.prix : 'N/A'} FCFA</p>
+                <p><strong>Date de début:</strong> {new Date(reservation.date_debut).toLocaleDateString()}</p>
+                <p><strong>Date de fin:</strong> {new Date(reservation.date_fin).toLocaleDateString()}</p>
+                <p><strong>Statut:</strong> {reservation.statut}</p>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <p>Aucune réservation trouvée.</p>
