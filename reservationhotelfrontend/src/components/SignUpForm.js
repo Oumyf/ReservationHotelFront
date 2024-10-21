@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './SignUpForm.css';
 
-
 const SignUpFormClient = () => {
     const [formData, setFormData] = useState({
         nom: '',
@@ -35,12 +34,9 @@ const SignUpFormClient = () => {
         if (formData.telephone.length !== 9) {
             newErrors.telephone = 'Le téléphone doit contenir exactement 9 chiffres.';
         }
-    
-        if (formData.nombre_etoiles < 1 || formData.nombre_etoiles > 5) {
-            newErrors.nombre_etoiles = 'Le nombre d\'étoiles doit être entre 1 et 5';
-        }
+
         return newErrors;
-        };
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -52,7 +48,7 @@ const SignUpFormClient = () => {
         try {
             const response = await axios.post('http://localhost:8000/api/register/client', formData);
             alert(response.data.message || 'Inscription réussie !');
-            setFormData({ nom: '', prenom: '', email: '', password: '', telephone: '' }); // Reset form
+            setFormData({ nom: '', email: '', password: '', telephone: '', adresse: '' }); // Reset form
         } catch (error) {
             const errorMsg = error.response?.data?.error || 'Une erreur est survenue';
             alert(errorMsg);
@@ -62,16 +58,23 @@ const SignUpFormClient = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="signup-form">
+        <form onSubmit={handleSubmit} className="registration-form">
             <h2>Inscription Client</h2>
             {Object.entries(formData).map(([key, value]) => (
                 <div className="form-group" key={key}>
                     <label htmlFor={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
-                    <input type={key === 'password' ? 'password' : 'text'} id={key} name={key} value={value} onChange={handleChange} />
+                    <input
+                        type={key === 'password' ? 'password' : 'text'}
+                        id={key}
+                        name={key}
+                        value={value}
+                        onChange={handleChange}
+                        required
+                    />
                     {errors[key] && <p className="error">{errors[key]}</p>}
                 </div>
             ))}
-            <button type="submit" disabled={loading}>
+            <button type="submit" className="submit-button" disabled={loading} aria-label="S'inscrire">
                 {loading ? 'Enregistrement...' : "S'inscrire"}
             </button>
         </form>

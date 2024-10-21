@@ -6,16 +6,17 @@ body {
     background-size: cover;
 }
 
-.registration-form {
+.signup-form {
     width: 90%;
     max-width: 500px;
     margin: 50px auto;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
-    border-radius: 10px;
-    backdrop-filter: blur(10px); /* Creates the frosted glass effect */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    background: rgba(255, 255, 255, 0.7); /* Réduit l'opacité pour un effet plus transparent */
+    border-radius: 15px; /* Arrondir les coins pour un look plus doux */
+    backdrop-filter: blur(10px); /* Effet de verre dépoli plus prononcé */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Ombre plus douce et plus étendue */
     color: #333;
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Bordure semi-transparente pour accentuer l'effet */
 }
 
 h2 {
@@ -39,12 +40,13 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
-textarea {
-    width: 100%;
+textarea,
+input[type="file"] {
+    width: 95%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(221, 221, 221, 0.7); /* Bordure semi-transparente */
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.5); /* Semi-transparent input */
+    background: rgba(255, 255, 255, 0.8); /* Arrière-plan légèrement plus opaque */
     transition: border-color 0.3s;
 }
 
@@ -53,12 +55,12 @@ input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="number"]:focus,
 textarea:focus {
-    border-color: #007BFF; /* Change border color on focus */
+    border-color: #007BFF; /* Couleur de la bordure au focus */
     outline: none;
 }
 
 textarea {
-    resize: none; /* Disable resizing */
+    resize: none; /* Désactiver le redimensionnement */
     min-height: 100px;
 }
 
@@ -67,8 +69,7 @@ textarea {
     font-size: 0.9em;
 }
 
-.submit-button,
-.back-button {
+button {
     width: 100%;
     padding: 10px;
     border: none;
@@ -80,31 +81,22 @@ textarea {
 }
 
 .submit-button {
-    background: #007BFF; /* Primary button color */
-}
-
-.back-button {
-    background: #6c757d; /* Secondary button color */
-    margin-top: 10px;
+    background: #007BFF; /* Couleur du bouton principal */
 }
 
 .submit-button:hover {
-    background: #0056b3; /* Darker shade on hover */
+    background: #0056b3; /* Teinte plus foncée au survol */
 }
 
-.back-button:hover {
-    background: #5a6268; /* Darker shade on hover */
-}
-
-/* Responsive adjustments */
+/* Ajustements responsifs */
 @media (max-width: 768px) {
-    .registration-form {
-        margin: 20px; /* Reduce margin on smaller screens */
-        padding: 15px; /* Reduce padding */
+    .signup-form {
+        margin: 20px; /* Réduire la marge sur les écrans plus petits */
+        padding: 15px; /* Réduire le rembourrage */
     }
 
     h2 {
-        font-size: 1.5em; /* Smaller heading size */
+        font-size: 1.5em; /* Taille de titre plus petite */
     }
 
     input[type="text"],
@@ -112,21 +104,20 @@ textarea {
     input[type="password"],
     input[type="number"],
     textarea {
-        padding: 8px; /* Reduce input padding */
+        padding: 8px; /* Réduire le rembourrage des entrées */
     }
 
-    .submit-button,
-    .back-button {
-        padding: 8px; /* Reduce button padding */
+    button {
+        padding: 8px; /* Réduire le rembourrage des boutons */
     }
 }
 
 @media (max-width: 480px) {
-    .registration-form {
-        width: 95%; /* Allow form to take more width on very small screens */
+    .signup-form {
+        width: 95%; /* Permettre au formulaire de prendre plus de largeur sur les très petits écrans */
     }
 
     h2 {
-        font-size: 1.2em; /* Smaller heading size */
+        font-size: 1.2em; /* Taille de titre plus petite */
     }
 }

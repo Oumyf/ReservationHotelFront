@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios'; // Assurez-vous d'importer Axios
 import hotel from './hotel.png';
 import './HotelDetails.css';
 
@@ -21,61 +22,55 @@ const HotelDetails = () => {
 
   const handleReservation = async () => {
     if (!userId) {
-        alert('Veuillez vous connecter pour effectuer une réservation.');
-        navigate('/connexion');
-        return;
+      alert('Veuillez vous connecter pour effectuer une réservation.');
+      navigate('/connexion');
+      return;
     }
 
     const { date_debut, date_fin, email, nom } = reservationInfo;
 
+    // Validation côté client
     if (!date_debut || !date_fin || !email || !nom) {
-        alert('Tous les champs sont requis.');
-        return;
+      alert('Tous les champs sont requis.');
+      return;
     }
 
     if (new Date(date_debut) >= new Date(date_fin)) {
-        alert('La date de début doit être antérieure à la date de fin.');
-        return;
+      alert('La date de début doit être antérieure à la date de fin.');
+      return;
     }
 
     if (!selectedChambre) {
-        alert('Veuillez sélectionner une chambre avant de réserver.');
-        return;
+      alert('Veuillez sélectionner une chambre avant de réserver.');
+      return;
     }
+
+    // Étape 1 : Créer la réservation (sans payer ici)
+    const reservationDetails = {
+      user_id: userId,
+      hotel_id: hotelId,
+      date_debut,
+      date_fin,
+      email,
+      nom,
+      chambre_id: selectedChambre.id,
+      montant: selectedChambre.prix, // Ajout du montant de la chambre
+      statut: 'pending', // Statut peut être défini ici si nécessaire
+    };
 
     try {
-        const response = await fetch('http://localhost:8000/api/reservations', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                user_id: userId,
-                hotel_id: hotelId,
-                chambre_id: selectedChambre.id,
-                ...reservationInfo,
-                statut: 'pending',
-            }),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(`Erreur lors de la création de la réservation: ${errorData.message || 'Erreur inconnue'}`);
-        }
-
-        const data = await response.json();
-        console.log('Reservation data:', data._id); // Log the reservation data
-
-        // Use data._id to navigate to the payment page
-        navigate(`/payment/${data._id}`);
-        setSelectedChambre(null);
-        setReservationInfo({ date_debut: '', date_fin: '', email: '', nom: '' }); // Réinitialiser les champs
+      const response = await axios.post('http://localhost:8000/api/reservations', reservationDetails); // Correction ici
+      if (response.data.paymentUrl) {
+        // Rediriger vers l'URL de paiement
+        window.location.href = response.data.paymentUrl;
+      } else {
+        setError('Erreur lors de la création de la réservation.');
+      }
     } catch (error) {
-        console.error('Erreur lors de la réservation:', error);
-        alert(`Erreur lors de la réservation: ${error.message}`);
+      console.error('Erreur lors de la réservation:', error);
+      alert('Erreur lors de la réservation. Veuillez réessayer.');
     }
-};
-
+  };
 
   const handleChambreClick = (chambre) => {
     setSelectedChambre(chambre);
