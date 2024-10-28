@@ -15,6 +15,7 @@ import ReservationList from "./components/ReservationList";
 import ConfirmationPage from "./components/ConfirmationReservation";
 // import RegistrationPage from "./components/RegistrationPage";
 import ReservationsByUser from "./components/ReservationsByUser";
+import SearchResults from "./components/searchResults";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -200,7 +201,11 @@ const App = () => {
 
         <Route path="/reservations" element={<ReservationList />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/search" element={<SearchResults />} /> {/* Ajoutez cette ligne pour la route de recherche */}
       </Routes>
+
+
+
     </Router>
   );
 };
