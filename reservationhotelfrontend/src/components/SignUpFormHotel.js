@@ -36,20 +36,16 @@ const SignUpFormHotel = () => {
         if (formData.nombre_etoiles < 1 || formData.nombre_etoiles > 5) {
             newErrors.nombre_etoiles = 'Le nombre d\'étoiles doit être entre 1 et 5';
         }
-
-         // Validation pour le mot de passe
-    if (formData.password.length < 6) {
-        newErrors.password = 'Le mot de passe doit contenir au moins 6 caractères.';
-    }
-
-    // Validation pour le téléphone
-    if (formData.telephone.length !== 9) {
-        newErrors.telephone = 'Le téléphone doit contenir exactement 9 chiffres.';
-    }
-    if (formData.description.length < 10 || formData.description.length > 255) {
-        newErrors.description = 'La description doit être entre 10 et 255';
-    }
-    return newErrors;
+        if (formData.password.length < 6) {
+            newErrors.password = 'Le mot de passe doit contenir au moins 6 caractères.';
+        }
+        if (formData.telephone.length !== 9) {
+            newErrors.telephone = 'Le téléphone doit contenir exactement 9 chiffres.';
+        }
+        if (formData.description.length < 10 || formData.description.length > 255) {
+            newErrors.description = 'La description doit être entre 10 et 255 caractères.';
+        }
+        return newErrors;
     };
 
     const handleSubmit = async (e) => {
@@ -90,10 +86,22 @@ const SignUpFormHotel = () => {
                 logo: null,
             }); // Reset form
         } catch (error) {
+            console.error('Erreur:', error);
             alert(error.message);
         } finally {
             setLoading(false);
         }
+    };
+
+    const formLabels = {
+        nom: "Nom de l'Hôtel",
+        email: "Email",
+        password: "Mot de passe",
+        telephone: "Téléphone",
+        adresse: "Adresse",
+        nombre_etoiles: "Nombre d'Étoiles",
+        description: "Description",
+        logo: "Logo de l'Hôtel",
     };
 
     return (
@@ -101,13 +109,15 @@ const SignUpFormHotel = () => {
             <h2>Inscription Hôtel</h2>
             {Object.entries(formData).map(([key, value]) => (
                 <div className="form-group" key={key}>
-                    <label htmlFor={key}>{key === 'nom' ? 'Nom de l\'Hôtel' : key.charAt(0).toUpperCase() + key.slice(1)}</label>
+                    <label htmlFor={key}>{formLabels[key]}</label>
                     {key === 'description' ? (
-                        <textarea id={key} name={key} value={value} onChange={handleChange} />
+                        <textarea id={key} name={key} value={value} onChange={handleChange} required />
                     ) : key === 'logo' ? (
                         <input type="file" id={key} name={key} accept="image/*" onChange={handleFileChange} />
+                    ) : key === 'nombre_etoiles' ? (
+                        <input type="number" id={key} name={key} value={value} onChange={handleChange} min="1" max="5" required />
                     ) : (
-                        <input type={key === 'password' ? 'password' : 'text'} id={key} name={key} value={value} onChange={handleChange} />
+                        <input type={key === 'password' ? 'password' : 'text'} id={key} name={key} value={value} onChange={handleChange} required />
                     )}
                     {errors[key] && <p className="error">{errors[key]}</p>}
                 </div>

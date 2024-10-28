@@ -14,7 +14,7 @@ const LoginForm = () => {
     e.preventDefault();
     setLoading(true);
     setErrorMessage('');
-
+  
     try {
       const response = await fetch('http://localhost:8000/api/login', {
         method: 'POST',
@@ -23,34 +23,34 @@ const LoginForm = () => {
         },
         body: JSON.stringify({ email, password }),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Erreur lors de la connexion. Veuillez vérifier vos informations.');
       }
-
+  
       const data = await response.json();
-
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userId', data.user.id);
-      localStorage.setItem('userRole', data.user.role);
-
+  
+      // Stockage des informations utilisateur
+      localStorage.setItem('user', JSON.stringify(data.user)); // Enregistre l'objet utilisateur complet
+      localStorage.setItem('token', data.token); // Assurez-vous de le conserver pour l'authentification
+  
       Swal.fire({
         icon: 'success',
         title: 'Connexion réussie',
         text: 'Vous êtes maintenant connecté!',
         confirmButtonText: 'OK',
       });
-
-      // Redirect based on the user role
+  
+      // Redirection basée sur le rôle
       if (data.user.role === 'hotel') {
         navigate('/dashboard'); 
       } else if (data.user.role === 'client') {
         navigate('/confirmationReservation'); 
       } else {
-        navigate('/confirmationReservation'); 
+        navigate('/'); 
       }
-
+  
     } catch (error) {
       setErrorMessage(error.message);
       Swal.fire({
@@ -63,6 +63,7 @@ const LoginForm = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="login-container">
