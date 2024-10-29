@@ -5,7 +5,8 @@ import './ReservationList.css';
 
 const ReservationList = () => {
   const [reservations, setReservations] = useState([]);
-  const [users, setUsers] = useState([]); // État pour stocker les utilisateurs
+  const [chambres, setChambres] = useState([]); // État pour stocker les chambres
+  const [users, setUsers] = useState([]); 
   const [currentPage, setCurrentPage] = useState(1);
   const [reservationsPerPage] = useState(8);
 
@@ -29,9 +30,20 @@ const ReservationList = () => {
         console.error("Erreur lors de la récupération des utilisateurs:", error);
       }
     };
+    const fetchChambres = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/chambres');
+        setChambres(response.data);
+        console.log("Chambres:", response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des chambres:", error);
+      }
+    };
   
     fetchReservations();
     fetchUsers();
+    fetchChambres();
+
   }, []);
   
 
@@ -59,9 +71,12 @@ const ReservationList = () => {
           {currentReservations.map((reservation) => {
   // Trouver l'utilisateur correspondant à user_id
   const user = users.find(user => user._id === reservation.user_id);
+  const chambre = chambres.find(chambre => chambre._id === reservation.chambre_id); // Trouver la chambre correspondante
   return (
     <tr key={reservation._id}>
-      <td>{user ? user.nom : 'Utilisateur inconnu'}</td> {/* Afficher le nom de l'utilisateur */}
+      <td>{user ? user.nom : 'Utilisateur inconnu'}</td> 
+      <td>{chambre ? chambre.nom : 'Chambre inconnue'}</td>
+      <td>{chambre ? chambre.prix : 'Chambre inconnue'}</td> {/* Afficher le nom de la chambre */}
       <td>{new Date(reservation.date_debut).toLocaleDateString()}</td>
       <td>{new Date(reservation.date_fin).toLocaleDateString()}</td>
       <td>{reservation.statut}</td>
