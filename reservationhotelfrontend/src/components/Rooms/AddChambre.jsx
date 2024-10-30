@@ -1,55 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import './AddChambre.css';
 
-const AddChambre = ({ fetchRooms, selectedRoom, closeAddChambre, user }) => {
+const AddChambre = ({ fetchRooms, closeAddChambre, selectedRoom }) => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user ? user.id : null; 
+  const hotelId = userId; 
+  console.log(userId);
+
   const [roomData, setRoomData] = useState({
-    nom: '',
-    type: '',
-    prix: '',
-    description: '',
-    disponibilite: true,
-    hotelId: '', // On va le remplir automatiquement si l'utilisateur est un hôtel
+    nom: selectedRoom?.nom || '',
+    type: selectedRoom?.type || '',
+    prix: selectedRoom?.prix || '',
+    description: selectedRoom?.description || '',
+    disponibilite: selectedRoom?.disponibilite ?? true,
     image: null,
-    nombreDePersonnes: '',
+    nombreDePersonnes: selectedRoom?.nombreDePersonnes || '',
   });
 
-  const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
 
-  // On suppose que l'utilisateur a un id d'hôtel s'il est connecté en tant qu'hôtel
-  const isHotel = user && user.role === 'hotel'; // Assurez-vous que votre objet utilisateur a cette propriété
-
-  useEffect(() => {
-    const getHotels = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/api/hotels');
-        const data = await response.json();
-        setHotels(data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des hôtels:', error);
-      }
-    };
-
-    getHotels();
-  }, []);
-
-  useEffect(() => {
-    if (selectedRoom) {
-      setRoomData(selectedRoom);
-    }
-  }, [selectedRoom]);
-
-  useEffect(() => {
-    // Si l'utilisateur est un hôtel, on assigne automatiquement l'id de l'hôtel
-    if (isHotel && user.hotelId) {
-      setRoomData((prevData) => ({
-        ...prevData,
-        hotelId: user.hotelId,
-      }));
-    }
-  }, [isHotel, user]);
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setRoomData((prevData) => ({
+      ...prevData,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -58,7 +36,6 @@ const AddChambre = ({ fetchRooms, selectedRoom, closeAddChambre, user }) => {
       image: file,
     }));
 
-    // Preview the selected image
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);
@@ -70,61 +47,60 @@ const AddChambre = ({ fetchRooms, selectedRoom, closeAddChambre, user }) => {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRoomData((prevData) => ({
-      ...prevData,
-      [name]: name === 'disponibilite' ? value === 'true' : value,
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Start loading state
+    if (!hotelId) {
+        Swal.fire('Erreur', "L'ID de l'hôtel est manquant. Veuillez vous reconnecter.", 'error');
+        return;
+    }
+
+    setLoading(true);
     const formData = new FormData();
-    Object.keys(roomData).forEach((key) => {
-      formData.append(key, roomData[key]);
+    
+    // Ajoutez toutes les données de la chambre
+    Object.entries({ ...roomData, hotelId }).forEach(([key, value]) => {
+        // N'ajoutez pas l'image si aucune nouvelle image n'est sélectionnée
+        if (key === 'image' && !value) {
+            // Si aucune nouvelle image n'est choisie, n'ajoutez rien
+        } else {
+            formData.append(key, value);
+        }
     });
 
     try {
-      const response = await fetch(`http://localhost:8000/api/chambres${selectedRoom ? `/${selectedRoom._id}` : ''}`, {
-        method: selectedRoom ? 'PUT' : 'POST',
-        body: formData,
-      });
+        const response = selectedRoom
+            ? await fetch(`http://localhost:8000/api/chambres/${selectedRoom._id}`, {
+                method: 'PUT',
+                body: formData,
+              })
+            : await fetch('http://localhost:8000/api/chambres', {
+                method: 'POST',
+                body: formData,
+              });
 
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.message || 'Erreur de mise à jour de la chambre');
-      }
-
-      await fetchRooms();
-      Swal.fire('Success', selectedRoom ? 'Chambre mise à jour avec succès' : 'Chambre ajoutée avec succès', 'success');
-      setRoomData({
-        nom: '',
-        type: '',
-        prix: '',
-        description: '',
-        disponibilite: true,
-        hotelId: '',
-        image: null,
-        nombreDePersonnes: '',
-      });
-      setImagePreview(null); // Reset image preview
-
+        if (response.ok) {
+            Swal.fire('Succès', selectedRoom ? 'Chambre mise à jour avec succès' : 'Chambre ajoutée avec succès', 'success');
+            fetchRooms();
+            closeAddChambre();
+        } else {
+            const errorData = await response.json();
+            throw new Error(errorData.message);
+        }
     } catch (error) {
-      console.error('Erreur dans handleSubmit:', error);
-      Swal.fire('Error', "Impossible d'ajouter ou de mettre à jour la chambre: " + error.message, 'error');
+        Swal.fire('Erreur', error.message || "Erreur lors de l'ajout ou de la mise à jour de la chambre", 'error');
+        console.error('Erreur:', error);
     } finally {
-      setLoading(false); // End loading state
+        setLoading(false);
     }
-  };
+};
+
+
 
   return (
-    <section className='AddChambre'>
-      <div>
-        <h2>{selectedRoom ? 'Modifier la Chambre' : 'Ajouter une Chambre'}</h2>
-        <form onSubmit={handleSubmit} className='AddChambreForm'>
+    <div className="add-chambre">
+      <h2>{selectedRoom ? 'Modifier la Chambre' : 'Ajouter une Chambre'}</h2>
+      <form onSubmit={handleSubmit} className="AddChambreForm">
+        <div>
           <div>
             <label>
               Nom:
@@ -134,9 +110,15 @@ const AddChambre = ({ fetchRooms, selectedRoom, closeAddChambre, user }) => {
           <div>
             <label>
               Type:
-              <input type="text" name="type" value={roomData.type} onChange={handleChange} required />
+              <select name="type" value={roomData.type} onChange={handleChange} required>
+                <option value="">Sélectionnez un type</option>
+                <option value="simple">Simple</option>
+                <option value="double">Double</option>
+                <option value="suite">Suite</option>
+              </select>
             </label>
           </div>
+
           <div>
             <label>
               Prix:
@@ -166,26 +148,6 @@ const AddChambre = ({ fetchRooms, selectedRoom, closeAddChambre, user }) => {
               </label>
             </div>
           </div>
-
-          {/* Afficher le champ d'hôtel uniquement si l'utilisateur n'est pas un hôtel */}
-          {!isHotel && (
-            <div>
-              <label>
-                Hôtel:
-                <select name="hotelId" value={roomData.hotelId} onChange={handleChange} required>
-                  <option value="" disabled>
-                    Sélectionner un hôtel
-                  </option>
-                  {hotels.map(hotel => (
-                    <option key={hotel._id} value={hotel._id}>
-                      {hotel.nom}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          )}
-
           <div>
             <label>
               Image:
@@ -193,11 +155,30 @@ const AddChambre = ({ fetchRooms, selectedRoom, closeAddChambre, user }) => {
             </label>
             {imagePreview && <img src={imagePreview} alt="Aperçu de l'image" style={{ width: '100px', height: 'auto' }} />}
           </div>
-          <button type="submit" disabled={loading}>{loading ? 'Enregistrement...' : 'Enregistrer'}</button>
-          <button type="button" onClick={() => { setRoomData({ nom: '', type: '', prix: '', description: '', disponibilite: true, hotelId: '', image: null, nombreDePersonnes: '' }); setImagePreview(null); closeAddChambre(); }}>Annuler</button>
-        </form>
-      </div>
-    </section>
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Enregistrement...' : selectedRoom ? 'Mettre à Jour' : 'Ajouter'}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setRoomData({
+              nom: '',
+              type: '',
+              prix: '',
+              description: '',
+              disponibilite: true,
+              image: null,
+              nombreDePersonnes: '',
+            });
+            setImagePreview(null);
+            closeAddChambre();
+          }}
+        >
+          Annuler
+        </button>
+      </form>
+    </div>
   );
 };
 

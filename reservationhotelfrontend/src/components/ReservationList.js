@@ -62,6 +62,8 @@ const ReservationList = () => {
           <thead>
             <tr>
               <th>Nom de l'Utilisateur</th>
+              <th>Chambre réservée</th>
+              <th>Prix de la chambre</th>
               <th>Date Début</th>
               <th>Date Fin</th>
               <th>Statut</th>
