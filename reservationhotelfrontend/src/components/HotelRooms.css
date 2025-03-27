@@ -1,0 +1,21 @@
+/* src/components/HotelRooms.css */
+.hotel-rooms-container {
+    padding: 20px;
+  }
+  
+  .hotel-rooms-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .hotel-rooms-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .hotel-rooms-container li {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+  

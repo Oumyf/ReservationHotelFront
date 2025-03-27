@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './HotelList.css'; // Make sure to create and import your CSS file
 
 const HotelList = () => {
   const [hotels, setHotels] = useState([]);
@@ -13,9 +14,9 @@ const HotelList = () => {
         throw new Error('Network response was not ok');
       }
 
-      const data = await response.json(); // Convertir la réponse en JSON
+      const data = await response.json();
       console.log('Response received:', data);
-      setHotels(data); // Mettez à jour l'état avec les hôtels récupérés
+      setHotels(data);
     } catch (error) {
       console.error('Error fetching hotels:', error);
       setError('Unable to fetch hotels. Please try again later.');
@@ -31,13 +32,22 @@ const HotelList = () => {
   return (
     <div>
       <h1>Liste des Hôtels</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && (
+        <div>
+          <p style={{ color: 'red' }}>{error}</p>
+          <button onClick={fetchHotels}>Réessayer</button>
+        </div>
+      )}
       {hotels.length === 0 ? (
         <p>Chargement des hôtels...</p>
       ) : (
         <ul>
           {hotels.map((hotel) => (
-            <li key={hotel._id}>{hotel.nom}</li> 
+            <li key={hotel._id}>
+              <strong>{hotel.nom}</strong><br />
+              <span>Adresse: {hotel.adresse}</span><br />
+              <span>Note: {hotel.note}</span>
+            </li> 
           ))}
         </ul>
       )}

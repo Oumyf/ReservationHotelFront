@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: url('./hotel.png') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.signup-form {
+    width: 90%;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.7); /* Réduit l'opacité pour un effet plus transparent */
+    border-radius: 15px; /* Arrondir les coins pour un look plus doux */
+    backdrop-filter: blur(10px); /* Effet de verre dépoli plus prononcé */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Ombre plus douce et plus étendue */
+    color: #333;
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Bordure semi-transparente pour accentuer l'effet */
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+input[type="file"] {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid rgba(221, 221, 221, 0.7); /* Bordure semi-transparente */
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.8); /* Arrière-plan légèrement plus opaque */
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    border-color: #007BFF; /* Couleur de la bordure au focus */
+    outline: none;
+}
+
+textarea {
+    resize: none; /* Désactiver le redimensionnement */
+    min-height: 100px;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submit-button {
+    background: #007BFF; /* Couleur du bouton principal */
+}
+
+.submit-button:hover {
+    background: #0056b3; /* Teinte plus foncée au survol */
+}
+
+/* Ajustements responsifs */
+@media (max-width: 768px) {
+    .signup-form {
+        margin: 20px; /* Réduire la marge sur les écrans plus petits */
+        padding: 15px; /* Réduire le rembourrage */
+    }
+
+    h2 {
+        font-size: 1.5em; /* Taille de titre plus petite */
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    textarea {
+        padding: 8px; /* Réduire le rembourrage des entrées */
+    }
+
+    button {
+        padding: 8px; /* Réduire le rembourrage des boutons */
+    }
+}
+
+@media (max-width: 480px) {
+    .signup-form {
+        width: 95%; /* Permettre au formulaire de prendre plus de largeur sur les très petits écrans */
+    }
+
+    h2 {
+        font-size: 1.2em; /* Taille de titre plus petite */
+    }
+}

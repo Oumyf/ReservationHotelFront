@@ -10,6 +10,7 @@
     font-size: 2rem;
     color: #b06835;
     margin-bottom: 28px;
+    margin-top: -200px;
     font-weight: bold;
 }
 
@@ -25,10 +26,9 @@
 /* Section des cartes */
 .hotel-section1 {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes sur grand écran */
     gap: 30px;
     padding: 0 20px;
-    
 }
 
 /* Carte des chambres */
@@ -39,9 +39,9 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-    width: 300px;
+    width: 100%; /* Adapter la largeur à 100% pour être responsive */
     display: block;
-    margin-left: -20px;
+    margin-left: 0; /* Correction du margin */
 }
 
 .hotel-card1:hover {
@@ -117,14 +117,71 @@
     font-weight: bold;
 }
 
+/* Breakpoints */
+
+/* Grand écran (ordinateur de bureau) */
 @media (max-width: 1024px) {
     .hotel-section1 {
         grid-template-columns: repeat(2, 1fr); /* 2 colonnes sur tablettes */
     }
+
+    .top1 p {
+        width: 85%; /* Réduire la largeur du texte sur tablettes */
+    }
 }
 
+/* Écran moyen (tablettes) */
 @media (max-width: 768px) {
     .hotel-section1 {
         grid-template-columns: 1fr; /* 1 colonne sur petits écrans */
+    }
+
+    .top1 h1 {
+        font-size: 1.8rem; /* Réduire la taille du titre */
+        margin-top: -150px; /* Ajuster la marge supérieure */
+    }
+
+    .top1 p {
+        width: 90%; /* Réduire encore la largeur du texte */
+        font-size: 1rem; /* Ajuster la taille du texte */
+    }
+}
+
+/* Petit écran (smartphones) */
+@media (max-width: 480px) {
+    .hotel {
+        padding: 30px 0; /* Réduire l'espace vertical */
+    }
+
+    .top1 h1 {
+        font-size: 1.5rem; /* Réduire la taille du titre sur mobile */
+        margin-top: -100px; /* Ajuster la marge supérieure */
+    }
+
+    .top1 p {
+        width: 95%; /* Presque toute la largeur de l'écran pour le texte */
+        font-size: 0.95rem; /* Réduire légèrement la taille du texte */
+    }
+
+    .hotel-card1 {
+        width: 100%; /* Les cartes prennent toute la largeur sur mobile */
+        margin-left: 0; /* Supprimer les marges inutiles */
+    }
+
+    .hotel-card1 h3 {
+        font-size: 1.3rem; /* Réduire la taille du titre des cartes */
+    }
+
+    .hotel-card1 p {
+        font-size: 1rem; /* Réduire la taille de la description des cartes */
+    }
+
+    .hotel-card1 .info {
+        font-size: 0.9rem; /* Réduire la taille des informations sur mobile */
+    }
+
+    .price-value, .price .adults {
+        font-size: 0.8rem; /* Ajuster la taille des prix et des détails */
+        padding: 6px 10px; /* Ajuster le padding */
     }
 }

@@ -1,0 +1,17 @@
+.notifications {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .notifications ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .notifications li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+  
